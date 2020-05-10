@@ -14,7 +14,13 @@
                 <label for="description">Description</label>
                 <input type="text" id="description" class="form-control" formControlName="description">
             </div>
-            <button type="submit" class="btn btn-success" [disabled]="movieForm.invalid">Enregistrer</button>
+            <div class="form-group">
+                <h4>Ajouter une photo</h4>
+                <input type="file" class="form-control" (change)="detectFiles($event)" accept="image/*">
+                <p class="text-success" *ngIf="fileUploaded">File chargé</p>
+            </div>
+            <button type="submit" class="btn btn-success" 
+                    [disabled]="movieForm.invalid || fileIsUploading">Enregistrer</button>
         </form>
     </div>
 </div>

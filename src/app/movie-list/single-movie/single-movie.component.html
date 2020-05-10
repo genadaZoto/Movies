@@ -1,1 +1,9 @@
-<p>single-movie works!</p>
+<div class="row">
+    <div class="col-xs-12">
+        <h1>{{ movie.title }}</h1>
+        <img style="max-width:300px" *ngIf="movie.photo" [src]="movie.photo">
+        <h3>{{ movie.releaseDate }}</h3>
+        <h3>{{ movie.description }}</h3>
+        <button class="btn btn-default" (click)="onBack()">Retour</button>
+    </div>
+</div>

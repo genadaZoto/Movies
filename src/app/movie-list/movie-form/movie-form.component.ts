@@ -12,7 +12,9 @@ import { Movie } from 'src/app/models/Movie.models';
 export class MovieFormComponent implements OnInit {
 
   movieForm: FormGroup;
-
+  fileIsUploading = false;
+  fileUrl: string;
+  fileUploaded = false;
 
   constructor(private formBuilder: FormBuilder,
               private moviesService: MoviesService,
@@ -35,8 +37,26 @@ export class MovieFormComponent implements OnInit {
     const releaseDate = this.movieForm.get('releaseDate').value;
     const description = this.movieForm.get('description').value;
     const newMovie = new Movie(title, releaseDate, description);
+    if(this.fileUrl && this.fileUrl !== ''){
+      newMovie.photo = this.fileUrl;
+    }
     this.moviesService.createNewMovie(newMovie);
     this.router.navigate(['/movies']);
   }
 
+  onUploadFile(file: File) {
+    this.fileIsUploading = true;
+    this.moviesService.uploadFile(file).then(
+      (url: string) => {
+        this.fileUrl = url;
+        this.fileIsUploading  = false;
+        this.fileUploaded = true;
+      }
+    );
+  }
+
+
+  detectFiles(event){
+    this.onUploadFile(event.target.files[0]);
+  }
 }
