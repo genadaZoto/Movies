@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Movie } from '../models/Movie.models';
+import { Subscription } from 'rxjs/Subscription';
+import { MoviesService } from '../services/movies.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-list',
@@ -7,9 +11,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MovieListComponent implements OnInit {
 
-  constructor() { }
+  movies: Movie[];
+  moviesSubscription: Subscription;
 
-  ngOnInit(): void {
+  constructor(private moviesService: MoviesService,
+              private router: Router) { }
+
+  ngOnInit(){
+    this.moviesSubscription = this.moviesService.moviesSubject.subscribe(
+      (movies: Movie[]) => {
+        this.movies = movies;
+      }
+    );
+    this.moviesService.getMovies();
+    this.moviesService.emitMovies();
+
+  }
+
+  onNewMovie() {
+    this.router.navigate(['/movies', 'new']);
+  }
+
+  onDeleteMovie(movie: Movie) {
+    this.moviesService.removeMovie(movie);
+  }
+  onViewMovie(id: number) {
+    this.router.navigate(['/movies', 'view', id]);
+  }
+
+  ngOnDestroy() {
+    this.moviesSubscription.unsubscribe();
   }
 
 }

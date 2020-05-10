@@ -1,1 +1,20 @@
-<p>movie-list works!</p>
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Vos films</h2>
+        <div class="list-group">
+            <button class="list-group-item"
+            *ngFor="let movie of movies; let i = index"
+            (click)="onViewMovie(i)">
+            <h3 class="list-group-item-heading">
+                {{ movie.title }}
+                <button class="btn btn-default pull-right" (click)="onDeleteMovie(movie)">
+                    <span class="glyphicon gliphicon-minus"></span>
+                </button>
+            </h3>
+            <p class="list-group-item-text"> {{ movie.releasedate }}</p>
+            <p class="list-group-item-text">{{ movie.description }}</p>
+            </button>
+            <button class="btn btn-primary" (click)="onNewMovie()">Créer un nouveau film</button>
+        </div>
+    </div>
+</div>
